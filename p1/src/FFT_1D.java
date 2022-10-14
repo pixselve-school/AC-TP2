@@ -8,7 +8,7 @@ public class FFT_1D {
   public static CpxTab combine(CpxTab c1, CpxTab c2) {
     assert (c1.taille() == c2.taille()) : "combine: c1 et c2 ne sont pas de même taille, taille c1=" + c1.taille() + " taille c2=" + c2.taille();
     int n = c1.taille() + c2.taille();
-    CpxTab res = new CpxTab(c1.taille());
+    CpxTab res = new CpxTab(n);
     for (int k = 0; k < c1.taille(); k++) {
       double a = c1.get_p_imag(k);
       double b = c1.get_p_reel(k);
@@ -18,10 +18,10 @@ public class FFT_1D {
 
       double theta = 2 * Math.PI * k / n;
 
-      res.set_p_imag(k, a + c * Math.cos(theta) + d * Math.sin(theta));
+      res.set_p_imag(k, a + c * Math.cos(theta) - d * Math.sin(theta));
       res.set_p_reel(k, b + d * Math.cos(theta) - c * Math.sin(theta));
 
-      res.set_p_imag(k + c1.taille(), a - c * Math.cos(theta) - d * Math.sin(theta));
+      res.set_p_imag(k + c1.taille(), a - c * Math.cos(theta) + d * Math.sin(theta));
       res.set_p_reel(k + c1.taille(), b - d * Math.cos(theta) + c * Math.sin(theta));
     }
     return res;
@@ -141,6 +141,15 @@ public class FFT_1D {
 
     /* Exo 2: calculez et affichez TFD(1,2,3,4) */
     //A FAIRE
+    CpxTab t = FFT(t5);
+    System.out.println("TFD(1,2,3,4) = " + t);
+
+    double[] t5_1 = {8, -1, 3, 2};
+
+    /* Exo 2: calculez et affichez */
+    //A FAIRE
+    CpxTab t_1 = FFT(t5_1);
+    System.out.println("TFD(8,-1,3,2) = " + t_1);
 
     /* Exo 3: calculez et affichez TFD_inverse(TFD(1,2,3,4)) */
     //A FAIRE
