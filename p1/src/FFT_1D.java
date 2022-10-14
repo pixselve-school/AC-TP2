@@ -86,13 +86,14 @@ public class FFT_1D {
     CpxTab x1 = FFT(t1), x2 = FFT(t2);
 
     //on calcule le produit terme à terme
-    for (int k = 0; k < x1.taille(); k++) {
-      x1.set_p_reel(k, x1.get_p_reel(k) * x2.get_p_reel(k) - x1.get_p_imag(k) * x2.get_p_imag(k));
-      x1.set_p_imag(k, x1.get_p_reel(k) * x2.get_p_imag(k) + x1.get_p_imag(k) * x2.get_p_reel(k));
+    CpxTab res = new CpxTab(t1.length);
+    for (int k = 0; k < t1.length; k++) {
+      res.set_p_reel(k, x1.get_p_reel(k) * x2.get_p_reel(k) - x1.get_p_imag(k) * x2.get_p_imag(k));
+      res.set_p_imag(k, x1.get_p_reel(k) * x2.get_p_imag(k) + x1.get_p_imag(k) * x2.get_p_reel(k));
     }
 
-    //on renvoie la FFT inverse de x1
-    return FFT_inverse(x1);
+    //on fait la FFT inverse de res
+    return FFT_inverse(res);
   }
 
 
@@ -170,19 +171,19 @@ public class FFT_1D {
 
 
     /* A(X) = 1 + 2X + 3X^2 + 4X^3 et B(X) = -3 + 2X - 5 X^2*/
-	/*
-		System.out.println("-----------------------------------------------------");
-		System.out.println("   Comparaison des 2 méthodes de multiplications polynomiales");
-		double[] t6 = {-3,2,-5,0};
-		System.out.println("mult via FFT  --> " + multiplication_polynome_viaFFT(t5, t6));
-		System.out.print(  "mult via coeff -> ");
-		afficher(multiplication_polynome_viaCoeff(t5, t6));
-	*/
+
+    System.out.println("-----------------------------------------------------");
+    System.out.println("   Comparaison des 2 méthodes de multiplications polynomiales");
+    double[] t6 = {-3, 2, -5, 0};
+    System.out.println("mult via FFT  --> " + multiplication_polynome_viaFFT(t5, t6));
+    System.out.print("mult via coeff -> ");
+    afficher(multiplication_polynome_viaCoeff(t5, t6));
+
 
     /* Exo 5: comparaison des temps de calculs */
-	/*
+
 		// Pour étude du temps de calcul 
-		int n = 256;  // taille des polynômes à multiplier (testez différentes valeurs en gardant des puissances de 2)
+		int n = (int) Math.pow(2, 15);  // taille des polynômes à multiplier (testez différentes valeurs en gardant des puissances de 2)
 			
 		System.out.println("Temps de calcul pour n="+n);
 		double[] tab1 =random(n),tab2 = random(n);
@@ -196,7 +197,7 @@ public class FFT_1D {
 		multiplication_polynome_viaFFT(tab1, tab2);
 		date2 = System.currentTimeMillis();
 		System.out.println("   via FFT  : " + (date2 - date1));
-	*/
+
 
   }
 
