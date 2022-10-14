@@ -27,104 +27,119 @@ public class FFT_1D {
     return res;
   }
 
-	//renvoie la TFD d'un tableau de complexes
-	//la taille de x doit être une puissance de 2
-	public static CpxTab FFT(CpxTab x) {
-		//A FAIRE : Test d'arrêt
+  //renvoie la TFD d'un tableau de complexes
+  //la taille de x doit être une puissance de 2
+  public static CpxTab FFT(CpxTab x) {
+    //A FAIRE : Test d'arrêt
+    if (x.taille() == 1) {
+      return x;
+    }
 
-		assert (x.taille()%2==0) : "FFT: la taille de x doit être une puissance de 2";
-		
-		//A FAIRE : Décomposition en "pair" et "impair" et appel récursif
+    assert (x.taille() > 0) : "FFT: la taille de x doit être strictement positive";
 
-		return null;
-	}
+    //A FAIRE : Décomposition en "pair" et "impair" et appel récursif
+    CpxTab pair = new CpxTab(x.taille() / 2);
+    CpxTab impair = new CpxTab(x.taille() / 2);
 
-	//renvoie la TFD d'un tableau de réels
-	//la taille de x doit être une puissance de 2
-	public static CpxTab FFT(double[] x) {
-		return FFT(new CpxTab(x));
-	}
-			
-	//renvoie la transformée de Fourier inverse de y
-	public static CpxTab FFT_inverse(CpxTab y) {
-		//A FAIRE
-		return null;
-	}
-	
-	//calcule le produit de deux polynômes en utilisant la FFT
-	//tab1 et tab2, sont les coefficients de ces polynômes
-	// CpxTab sera le tableau des coefficients du polynôme produit (purement réel)
-	public static CpxTab multiplication_polynome_viaFFT(double[] tab1, double[] tab2) {
-		
-		//on commence par doubler la taille des vecteurs en rajoutant des zéros à la fin (cf TD)
-		double[] t1 = new double[2*tab1.length], t2 = new double[2*tab1.length];
-		for (int i = 0; i < tab1.length; i++) {
-			t1[i] = tab1[i];
-			t2[i] = tab2[i];
-		}
+    for (int k = 0; k < x.taille(); k++) {
+      if (k % 2 == 0) {
+        pair.set_p_reel(k / 2, x.get_p_reel(k));
+        pair.set_p_imag(k / 2, x.get_p_imag(k));
+      } else {
+        impair.set_p_reel(k / 2, x.get_p_reel(k));
+        impair.set_p_imag(k / 2, x.get_p_imag(k));
+      }
+    }
 
-		//A COMPLETER !!
-		return null;
-	}
+    return combine(FFT(pair), FFT(impair));
+  }
 
-	
-	//renvoie un tableau de réels aléatoires
-	//utile pour tester la multiplication de polynômes
-	public static double[] random(int n) {
-		double[] t = new double[n];
+  //renvoie la TFD d'un tableau de réels
+  //la taille de x doit être une puissance de 2
+  public static CpxTab FFT(double[] x) {
+    return FFT(new CpxTab(x));
+  }
 
-		for (int i = 0; i < n; i++)
-			t[i] = Math.random();
-		return t;
-	}
+  //renvoie la transformée de Fourier inverse de y
+  public static CpxTab FFT_inverse(CpxTab y) {
+    //A FAIRE
+    return null;
+  }
 
-	//effectue la multiplication de polynômes représentés par coefficients
-	// p1, p2 les coefficients des deux polynômes P1 et P2
-	// renvoie les coefficients du polynôme P1*P2
-	private static double [] multiplication_polynome_viaCoeff(double[] p1, double[] p2){
-		
-		int n = p1.length + p2.length - 1;
-		double a,b;
-		double [] out = new double[n];
-		for (int k = 0; k < n; k++) {
-			for (int i = 0; i <= k; i++) {
-				a = (i<p1.length) ? p1[i]:0;
-				b = (k-i<p2.length) ? p2[k-i] : 0;
-				out[k] += a*b;
-			}
-		}
-		return out;
-	}
-	
+  //calcule le produit de deux polynômes en utilisant la FFT
+  //tab1 et tab2, sont les coefficients de ces polynômes
+  // CpxTab sera le tableau des coefficients du polynôme produit (purement réel)
+  public static CpxTab multiplication_polynome_viaFFT(double[] tab1, double[] tab2) {
 
-	//affiche un tableau de réels
-	private static void afficher(double [] t){
-		System.out.print("[");
-		for(int k=0;k<t.length;k++){
-			System.out.print(t[k]);
-			if (k<(t.length-1))
-				System.out.print(" ");
-		}
-		System.out.println("]");
-	}
-	
-	public static void main(String[] args) {
-		double[] t5 = {1,2,3,4};
+    //on commence par doubler la taille des vecteurs en rajoutant des zéros à la fin (cf TD)
+    double[] t1 = new double[2 * tab1.length], t2 = new double[2 * tab1.length];
+    for (int i = 0; i < tab1.length; i++) {
+      t1[i] = tab1[i];
+      t2[i] = tab2[i];
+    }
 
-		/* Exo 2: calculez et affichez TFD(1,2,3,4) */
-			//A FAIRE
-		
-		/* Exo 3: calculez et affichez TFD_inverse(TFD(1,2,3,4)) */
-			//A FAIRE		
+    //A COMPLETER !!
+    return null;
+  }
 
-		/* Exo 4: multiplication polynomiale, vérification*/
-			/* A(X) = 2 et B(X)=-3 */
-			//A FAIRE		
 
-			/* A(X) = 2+X et B(X)= -3+2X */
-			//A FAIRE					
+  //renvoie un tableau de réels aléatoires
+  //utile pour tester la multiplication de polynômes
+  public static double[] random(int n) {
+    double[] t = new double[n];
 
-			/* A(X) = 1 + 2X + 3X^2 + 4X^3 et B(X) = -3 + 2X - 5 X^2*/
+    for (int i = 0; i < n; i++)
+      t[i] = Math.random();
+    return t;
+  }
+
+  //effectue la multiplication de polynômes représentés par coefficients
+  // p1, p2 les coefficients des deux polynômes P1 et P2
+  // renvoie les coefficients du polynôme P1*P2
+  private static double[] multiplication_polynome_viaCoeff(double[] p1, double[] p2) {
+
+    int n = p1.length + p2.length - 1;
+    double a, b;
+    double[] out = new double[n];
+    for (int k = 0; k < n; k++) {
+      for (int i = 0; i <= k; i++) {
+        a = (i < p1.length) ? p1[i] : 0;
+        b = (k - i < p2.length) ? p2[k - i] : 0;
+        out[k] += a * b;
+      }
+    }
+    return out;
+  }
+
+
+  //affiche un tableau de réels
+  private static void afficher(double[] t) {
+    System.out.print("[");
+    for (int k = 0; k < t.length; k++) {
+      System.out.print(t[k]);
+      if (k < (t.length - 1))
+        System.out.print(" ");
+    }
+    System.out.println("]");
+  }
+
+  public static void main(String[] args) {
+    double[] t5 = {1, 2, 3, 4};
+
+    /* Exo 2: calculez et affichez TFD(1,2,3,4) */
+    //A FAIRE
+
+    /* Exo 3: calculez et affichez TFD_inverse(TFD(1,2,3,4)) */
+    //A FAIRE
+
+    /* Exo 4: multiplication polynomiale, vérification*/
+    /* A(X) = 2 et B(X)=-3 */
+    //A FAIRE
+
+    /* A(X) = 2+X et B(X)= -3+2X */
+    //A FAIRE
+
+    /* A(X) = 1 + 2X + 3X^2 + 4X^3 et B(X) = -3 + 2X - 5 X^2*/
 	/*
 		System.out.println("-----------------------------------------------------");
 		System.out.println("   Comparaison des 2 méthodes de multiplications polynomiales");
@@ -134,7 +149,7 @@ public class FFT_1D {
 		afficher(multiplication_polynome_viaCoeff(t5, t6));
 	*/
 
-		/* Exo 5: comparaison des temps de calculs */
+    /* Exo 5: comparaison des temps de calculs */
 	/*
 		// Pour étude du temps de calcul 
 		int n = 256;  // taille des polynômes à multiplier (testez différentes valeurs en gardant des puissances de 2)
@@ -153,6 +168,6 @@ public class FFT_1D {
 		System.out.println("   via FFT  : " + (date2 - date1));
 	*/
 
-	}
+  }
 
 }
