@@ -82,8 +82,17 @@ public class FFT_1D {
       t2[i] = tab2[i];
     }
 
-    //A COMPLETER !!
-    return null;
+    //on calcule la FFT de t1 et t2
+    CpxTab x1 = FFT(t1), x2 = FFT(t2);
+
+    //on calcule le produit terme à terme
+    for (int k = 0; k < x1.taille(); k++) {
+      x1.set_p_reel(k, x1.get_p_reel(k) * x2.get_p_reel(k) - x1.get_p_imag(k) * x2.get_p_imag(k));
+      x1.set_p_imag(k, x1.get_p_reel(k) * x2.get_p_imag(k) + x1.get_p_imag(k) * x2.get_p_reel(k));
+    }
+
+    //on renvoie la FFT inverse de x1
+    return FFT_inverse(x1);
   }
 
 
