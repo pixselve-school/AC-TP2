@@ -1,15 +1,31 @@
 /**** on va ici implémenter la transformée de Fourier rapide 1D ****/
 
 public class FFT_1D {
-	
-	//"combine" c1 et c2 selon la formule vue en TD
-	// c1 et c2 sont de même taille
-	// la taille du résultat est le double de la taille de c1
-	public static CpxTab combine(CpxTab c1, CpxTab c2) {
-		assert (c1.taille()==c2.taille()) : "combine: c1 et c2 ne sont pas de même taille, taille c1="+c1.taille()+" taille c2="+c2.taille();
-		//A FAIRE
-		return null;
-	}
+
+  //"combine" c1 et c2 selon la formule vue en TD
+  // c1 et c2 sont de même taille
+  // la taille du résultat est le double de la taille de c1
+  public static CpxTab combine(CpxTab c1, CpxTab c2) {
+    assert (c1.taille() == c2.taille()) : "combine: c1 et c2 ne sont pas de même taille, taille c1=" + c1.taille() + " taille c2=" + c2.taille();
+    int n = c1.taille() + c2.taille();
+    CpxTab res = new CpxTab(c1.taille());
+    for (int k = 0; k < c1.taille(); k++) {
+      double a = c1.get_p_imag(k);
+      double b = c1.get_p_reel(k);
+
+      double c = c2.get_p_imag(k);
+      double d = c2.get_p_reel(k);
+
+      double theta = 2 * Math.PI * k / n;
+
+      res.set_p_imag(k, a + c * Math.cos(theta) + d * Math.sin(theta));
+      res.set_p_reel(k, b + d * Math.cos(theta) - c * Math.sin(theta));
+
+      res.set_p_imag(k + c1.taille(), a - c * Math.cos(theta) - d * Math.sin(theta));
+      res.set_p_reel(k + c1.taille(), b - d * Math.cos(theta) + c * Math.sin(theta));
+    }
+    return res;
+  }
 
 	//renvoie la TFD d'un tableau de complexes
 	//la taille de x doit être une puissance de 2
