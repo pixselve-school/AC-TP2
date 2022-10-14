@@ -18,10 +18,10 @@ public class FFT_1D {
 
       double theta = 2 * Math.PI * k / n;
 
-      res.set_p_imag(k, a + c * Math.cos(theta) - d * Math.sin(theta));
+      res.set_p_imag(k, a + c * Math.cos(theta) + d * Math.sin(theta));
       res.set_p_reel(k, b + d * Math.cos(theta) - c * Math.sin(theta));
 
-      res.set_p_imag(k + c1.taille(), a - c * Math.cos(theta) + d * Math.sin(theta));
+      res.set_p_imag(k + c1.taille(), a - c * Math.cos(theta) - d * Math.sin(theta));
       res.set_p_reel(k + c1.taille(), b - d * Math.cos(theta) + c * Math.sin(theta));
     }
     return res;
@@ -64,8 +64,8 @@ public class FFT_1D {
   public static CpxTab FFT_inverse(CpxTab y) {
     CpxTab res = FFT(y.conjugue()).conjugue();
     for (int k = 0; k < res.taille(); k++) {
-      res.set_p_reel(k, res.get_p_reel(k) / res.taille());
-      res.set_p_imag(k, res.get_p_imag(k) / res.taille());
+      res.set_p_reel(k, res.get_p_reel(k) / y.taille());
+      res.set_p_imag(k, res.get_p_imag(k) / y.taille());
     }
     return res;
   }
@@ -76,7 +76,7 @@ public class FFT_1D {
   public static CpxTab multiplication_polynome_viaFFT(double[] tab1, double[] tab2) {
 
     //on commence par doubler la taille des vecteurs en rajoutant des zéros à la fin (cf TD)
-    double[] t1 = new double[2 * tab1.length], t2 = new double[2 * tab1.length];
+    double[] t1 = new double[2 * tab1.length], t2 = new double[2 * tab2.length];
     for (int i = 0; i < tab1.length; i++) {
       t1[i] = tab1[i];
       t2[i] = tab2[i];
@@ -144,22 +144,30 @@ public class FFT_1D {
     CpxTab t = FFT(t5);
     System.out.println("TFD(1,2,3,4) = " + t);
 
-    double[] t5_1 = {8, -1, 3, 2};
-
-    /* Exo 2: calculez et affichez */
-    //A FAIRE
-    CpxTab t_1 = FFT(t5_1);
-    System.out.println("TFD(8,-1,3,2) = " + t_1);
-
     /* Exo 3: calculez et affichez TFD_inverse(TFD(1,2,3,4)) */
-    //A FAIRE
+    CpxTab t_2 = FFT_inverse(t);
+    System.out.println("TFD_inverse(TFD(1,2,3,4)) = " + t_2);
+
 
     /* Exo 4: multiplication polynomiale, vérification*/
     /* A(X) = 2 et B(X)=-3 */
     //A FAIRE
+    double[] a = {2};
+    double[] b = {-3};
+
+    CpxTab c = multiplication_polynome_viaFFT(a, b);
+    System.out.println("A(X) = 2 et B(X)=-3");
+    System.out.println("A(X)*B(X) = " + c);
 
     /* A(X) = 2+X et B(X)= -3+2X */
     //A FAIRE
+    double[] a2 = {2, 1};
+    double[] b2 = {-3, 2};
+
+    CpxTab c2 = multiplication_polynome_viaFFT(a2, b2);
+    System.out.println("A(X) = 2+X et B(X)= -3+2X");
+    System.out.println("A(X)*B(X) = " + c2);
+
 
     /* A(X) = 1 + 2X + 3X^2 + 4X^3 et B(X) = -3 + 2X - 5 X^2*/
 	/*
