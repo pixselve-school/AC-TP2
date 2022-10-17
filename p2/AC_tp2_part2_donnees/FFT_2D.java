@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FFT_2D {
 
@@ -111,12 +113,20 @@ public class FFT_2D {
       BytePixmap BP = new BytePixmap("p2/AC_tp2_part2_donnees/barbara_512.pgm");
       CpxImg I = new CpxImg(BP);
 
-      // Do the FFT
-      CpxImg FI = FFT(I);
+        // Do the FFT
+        CpxImg FI = FFT(I);
 
-      //Exemple, écriture
-      BP = FI.convert_to_BytePixmap();
-      BP.write("p2/results/exercice2/barbara_512_fft.pgm");
+        //Exemple, écriture
+        BP = FI.convert_to_BytePixmap();
+        BP.write("p2/results/exercice2/fft/" + image + "_fft.pgm");
+
+        // Do the iFFT
+        CpxImg IFI = FFT_inverse(FI);
+        BP = IFI.convert_to_BytePixmap();
+        BP.write("p2/results/exercice2/ifft/" + image + "_fft.pgm");
+      }
+
+
     } catch (IOException e) {
       e.printStackTrace();
     }
