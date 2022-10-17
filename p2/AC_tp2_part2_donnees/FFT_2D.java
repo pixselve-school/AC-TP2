@@ -109,9 +109,19 @@ public class FFT_2D {
     System.out.println("Fonction a : " + fonction_a);
     System.out.println("FFT de Fonction a : " + fft_fonction_a);
     try {
-//      Exemple, lecture
-      BytePixmap BP = new BytePixmap("p2/AC_tp2_part2_donnees/barbara_512.pgm");
-      CpxImg I = new CpxImg(BP);
+
+      List<String> images = new ArrayList<>();
+      images.add("fingerprint");
+      images.add("mire2");
+      images.add("barbara_512");
+      images.add("tigre_512");
+      images.add("lena_512");
+      images.add("mire3");
+      images.add("mire1");
+      for (String image : images) {
+        //      Exemple, lecture
+        BytePixmap BP = new BytePixmap("p2/AC_tp2_part2_donnees/" + image + ".pgm");
+        CpxImg I = new CpxImg(BP);
 
         // Do the FFT
         CpxImg FI = FFT(I);
