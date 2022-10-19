@@ -181,22 +181,24 @@ public class FFT_1D {
 
 
     /* Exo 5: comparaison des temps de calculs */
+    for(int i=0; i<=15; i++){
+      // Pour étude du temps de calcul
+      int n = (int) Math.pow(2, i);  // taille des polynômes à multiplier (testez différentes valeurs en gardant des puissances de 2)
 
-		// Pour étude du temps de calcul 
-		int n = (int) Math.pow(2, 15);  // taille des polynômes à multiplier (testez différentes valeurs en gardant des puissances de 2)
-			
-		System.out.println("Temps de calcul pour n="+n);
-		double[] tab1 =random(n),tab2 = random(n);
-		long date1, date2;
-		date1 = System.currentTimeMillis();
-		multiplication_polynome_viaCoeff(tab1, tab2);
-		date2 = System.currentTimeMillis();
-		System.out.println("   via Coeff: " + (date2 - date1));
+      System.out.println("Temps de calcul pour n="+n);
+      double[] tab1 =random(n),tab2 = random(n);
+      long date1, date2;
+      date1 = System.currentTimeMillis();
+      multiplication_polynome_viaCoeff(tab1, tab2);
+      date2 = System.currentTimeMillis();
+      System.out.println("   via Coeff: " + (date2 - date1));
 
-		date1 = System.currentTimeMillis();
-		multiplication_polynome_viaFFT(tab1, tab2);
-		date2 = System.currentTimeMillis();
-		System.out.println("   via FFT  : " + (date2 - date1));
+      date1 = System.currentTimeMillis();
+      multiplication_polynome_viaFFT(tab1, tab2);
+      date2 = System.currentTimeMillis();
+      System.out.println("   via FFT  : " + (date2 - date1));
+    }
+
 
 
   }
