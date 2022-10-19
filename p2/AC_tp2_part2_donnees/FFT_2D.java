@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class FFT_2D {
@@ -316,10 +318,73 @@ public class FFT_2D {
     }
   }
 
+  public static BytePixmap compression_seuil_10_percent(CpxImg I) {
+    // Do the FFT
+    CpxImg FI = FFT(I);
+    // list all the modules values and count
+    HashMap<Double, Integer> modules = new HashMap<>();
+    for (int i = 0; i < FI.taille(); i++) {
+      for (int j = 0; j < FI.taille(); j++) {
+        double module = Math.sqrt(Math.pow(FI.get_p_reel(i, j), 2) + Math.pow(FI.get_p_imag(i, j), 2));
+        if (modules.containsKey(module)) {
+          modules.put(module, modules.get(module) + 1);
+        } else {
+          modules.put(module, 1);
+        }
+      }
+    }
+    // sort the list (descending order)
+    List<Double> modules_sorted = new ArrayList<>(modules.keySet());
+    Collections.sort(modules_sorted, Collections.reverseOrder());
+    // get the 10% of the modules
+    int count = 0;
+    int count_10_percent = (int) (FI.taille() * FI.taille() * 0.1);
+    int index = 0;
+    while (count < count_10_percent && index < modules_sorted.size()) {
+      count += modules.get(modules_sorted.get(index));
+      index++;
+    }
+    double seuil = modules_sorted.get(index);
+    compression_seuil(FI, seuil);
+    // Do the iFFT
+    CpxImg IFI = FFT_inverse(FI);
+    return IFI.convert_to_BytePixmap();
+
+
+  }
+
+  public static BytePixmap compression_10_percent(CpxImg I) {
+    // Do the FFT
+    CpxImg FI = FFT(I);
+    // compute the k value for 10%
+    int k = (int) (FI.taille() * FI.taille() * 0.1);
+    compression(FI, k);
+    // Do the iFFT
+    CpxImg IFI = FFT_inverse(FI);
+    return IFI.convert_to_BytePixmap();
+  }
+
+  public static void exercice7() {
+    try {
+      List<String> images = new ArrayList<>();
+      images.add("barbara_512");
+      images.add("tigre_512");
+      for (String image : images) {
+        //      Exemple, lecture
+        BytePixmap BP = new BytePixmap("p2/AC_tp2_part2_donnees/" + image + ".pgm");
+        CpxImg I = new CpxImg(BP);
+
+        compression_seuil_10_percent(I).write("p2/results/exercice7/" + image + "_compressed_10_percent_seuil.pgm");
+        compression_10_percent(I).write("p2/results/exercice7/" + image + "_compressed_10_percent.pgm");
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   public static void main(String[] args) {
-    exercice5();
-    exercice6();
+    exercice7();
   }
 
 }
