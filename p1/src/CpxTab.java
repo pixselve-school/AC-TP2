@@ -110,7 +110,7 @@ public class CpxTab {
 					}
 				}
 				if (k < taille() - 1)
-					r = r + " ";
+					r = r + ", ";
 			}
 			r = r + "]";
 			return r;

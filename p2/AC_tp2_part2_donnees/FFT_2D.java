@@ -88,14 +88,13 @@ public class FFT_2D {
     return nb_coeff;
   }
 
-
   public static void exercice1() {
 //    try {
     // Pour n = 16
     // vecteur constant a = (a, . . . , a). Testez différentes valeurs de a ? R.
 
     int n = (int) Math.pow(2, 4);
-    int a = 10;
+    int a = 5;
 
     // On crée un vecteur constant
     CpxTab vecteurConstant = new CpxTab(n);
@@ -109,14 +108,8 @@ public class FFT_2D {
 
 
     // sinusoïde pure
-    int k = 1;
-    CpxTab synusoide = new CpxTab(n);
-    for (int i = 0; i < n; i++) {
-      synusoide.set_p_reel(i, Math.cos(2 * Math.PI * k * i / n));
-    }
-    CpxTab fftSinusoide = FFT_1D.FFT(synusoide);
-    System.out.println("Sinusoïde : " + synusoide);
-    System.out.println("FFT de la sinusoïde : " + fftSinusoide);
+    pureSinusoide2D(n, 2);
+    pureSinusoide2D(n, 5);
 
     // somme de 2 sinusoïdes
     CpxTab sommeSinusoide = new CpxTab(n);
@@ -138,6 +131,19 @@ public class FFT_2D {
     CpxTab fft_fonction_a = FFT_1D.FFT(fonction_a);
     System.out.println("Fonction a : " + fonction_a);
     System.out.println("FFT de Fonction a : " + fft_fonction_a);
+  }
+
+  private static void pureSinusoide2D(int n, int k) {
+    CpxTab synusoide = new CpxTab(n);
+    for (int i = 0; i < n; i++) {
+      synusoide.set_p_reel(i, Math.cos(2 * Math.PI * k * i / n));
+    }
+    CpxTab fftSinusoide = FFT_1D.FFT(synusoide);
+    System.out.println("Sinusoïde k=" + k + " : " + synusoide);
+    System.out.println("FFT de la sinusoïde : " + fftSinusoide);
+  }
+
+  public static void exercice2() {
     try {
 
       List<String> images = new ArrayList<>();
@@ -158,12 +164,12 @@ public class FFT_2D {
 
         //Exemple, écriture
         BP = FI.convert_to_BytePixmap();
-        BP.write("p2/results/exercice2/fft/" + image + "_fft.pgm");
+        BP.write("p2/results/exercice2/" + image + "_fft.pgm");
 
         // Do the iFFT
         CpxImg IFI = FFT_inverse(FI);
         BP = IFI.convert_to_BytePixmap();
-        BP.write("p2/results/exercice2/ifft/" + image + "_fft.pgm");
+        BP.write("p2/results/exercice2/" + image + "_ifft.pgm");
       }
 
 
@@ -292,7 +298,7 @@ public class FFT_2D {
       images.add("lena_512");
       images.add("mire3");
       images.add("mire1");
-      for (int k = 1; k < 100; k *= 2) {
+      for (int k = 1; k < 100 * 4; k *= 4) {
         for (String image : images) {
           //      Exemple, lecture
           BytePixmap BP = new BytePixmap("p2/AC_tp2_part2_donnees/" + image + ".pgm");
@@ -384,6 +390,12 @@ public class FFT_2D {
 
 
   public static void main(String[] args) {
+//    exercice1();
+//    exercice2();
+//    exercice4_1();
+//    exercice4_2();
+//    exercice5();
+//    exercice6();
     exercice7();
   }
 
